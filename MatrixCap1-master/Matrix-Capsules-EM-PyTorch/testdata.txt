@@ -1,1 +1,2 @@
 Test Set: Average Loss: 7.337740, Accuracy: 9.065495 
+Test Set: Average Loss: 7.406343, Accuracy: 10.150000 

@@ -95,7 +95,6 @@ def get_setting(args):
         test_loader = torch.utils.data.DataLoader(
             datasets.CIFAR10(path, train=False,
                              transform=transforms.Compose([
-                                 transforms.Grayscale(num_output_channels=1),
                                  transforms.ToTensor()
                              ])),
             batch_size=args.test_batch_size, shuffle=True, **kwargs)
