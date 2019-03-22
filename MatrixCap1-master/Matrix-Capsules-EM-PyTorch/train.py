@@ -8,7 +8,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 
-from model import capsules
+from model import conv3x3, conv1x1, norm, ResBlock, ODEFunc, ODEBlock, PrimaryCaps, ConvCaps
 from loss import SpreadLoss
 from datasets import smallNORB
 
@@ -224,10 +224,15 @@ def main():
     # datasets
     num_class, train_loader, test_loader = get_setting(args)
 
-    # model
+    # model\
+    downsampling_layers = [
+            nn.Conv2d(1, 32, 3, 1),
+            ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2)),
+            ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2)),
+    ]
     feature_layers = [ODEBlock(ODEfunc(32))]
-    capsule_layers = [PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10 1, 4, 1, 3, coor_add=True, w_shared=True)]
-    model = nn.Sequential(*feature_layers, *capsule_layers).to(device)
+    capsule_layers = [PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10, 1, 4, 1, 3, coor_add=True, w_shared=True)]
+    model = nn.Sequential(*downsampling_layers, *feature_layers, *capsule_layers).to(device)
 
     criterion = SpreadLoss(num_class=num_class, m_min=0.2, m_max=0.9)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, weight_decay=args.weight_decay, momentum=0.9)

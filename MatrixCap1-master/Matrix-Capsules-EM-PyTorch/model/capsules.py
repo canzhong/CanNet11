@@ -6,33 +6,71 @@ import math
 from torchdiffeq import odeint_adjoint as odeint
 
 
-class ODEfunc(nn.Module):
+def conv3x3(in_planes, out_planes, stride=1):
+    """3x3 convolution with padding"""
+    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False)
 
-    def __init__(self, dim):
-        super(ODEfunc, self).__init__()
-        self.norm1 = nn.BatchNorm2d(dim)
-        self.relu= nn.nn.ReLU(inplace=True)
-        self.conv1 = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=1, bias=False)
-        self.norm2 = nn.BatchNorm2d(dim)
-        self.conv2 = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=1, bias=False)
-        self.norm3 = nn.BatchNorm2d(dim)
-        self.conv3 = nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=1, bias=False)
-        self.norm4 = nn.BatchNorm2d(dim)
-        self.nfe = 0
 
-    def forward(self, t x):
-        self.nfe += 1
-        out = self.norm1(x)
+def conv1x1(in_planes, out_planes, stride=1):
+    """1x1 convolution"""
+    return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
+
+
+def norm(dim):
+    return nn.GroupNorm(min(32, dim), dim)
+
+
+class ResBlock(nn.Module):
+    expansion = 1
+
+    def __init__(self, inplanes, planes, stride=1, downsample=None):
+        super(ResBlock, self).__init__()
+        self.norm1 = norm(inplanes)
+        self.relu = nn.ReLU(inplace=True)
+        self.downsample = downsample
+        self.conv1 = conv3x3(inplanes, planes, stride)
+        self.norm2 = norm(planes)
+        self.conv2 = conv3x3(planes, planes)
+
+    def forward(self, x):
+        shortcut = x
+
+        out = self.relu(self.norm1(x))
+
+        if self.downsample is not None:
+            shortcut = self.downsample(out)
+
         out = self.conv1(out)
         out = self.norm2(out)
         out = self.relu(out)
         out = self.conv2(out)
+
+        return out + shortcut
+
+
+class ODEfunc(nn.Module):
+
+    def __init__(self, dim):
+        super(ODEfunc, self).__init__()
+        self.norm1 = norm(dim)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv1 = conv3x3(dim, dim)
+        self.norm2 = norm(dim)
+        self.conv2 = conv3x3(dim, dim)
+        self.norm3 = norm(dim)
+        self.nfe = 0
+
+    def forward(self, t, x):
+        self.nfe += 1
+        out = self.norm1(x)
+        out = self.relu(out)
+        out = self.conv1(out)
         out = self.norm2(out)
         out = self.relu(out)
-        out = self.conv3(out)
-        out = self.norm4(out)
-
+        out = self.conv2(out)
+        out = self.norm3(out)
         return out
+
 
 class ODEBlock(nn.Module):
 
@@ -53,7 +91,6 @@ class ODEBlock(nn.Module):
     @nfe.setter
     def nfe(self, value):
         self.odefunc.nfe = value
-
 
 class PrimaryCaps(nn.Module):
     r"""Creates a primary convolutional capsule layer
