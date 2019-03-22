@@ -38,7 +38,7 @@ parser.add_argument('--snapshot-folder', type=str, default='./snapshots', metava
                     help='where to store the snapshots')
 parser.add_argument('--data-folder', type=str, default='./data', metavar='DF',
                     help='where to store the datasets')
-parser.add_argument('--dataset', type=str, default='mnist', metavar='D',
+parser.add_argument('--dataset', type=str, default='cifar10', metavar='D',
                     help='dataset for training(mnist, smallNORB)')
 parser.add_argument('--tol', type=float, default=.00001, metavar='TOL')
 
@@ -87,7 +87,7 @@ def get_setting(args):
         train_loader = torch.utils.data.DataLoader(
             datasets.CIFAR10(path, train=True, download=True,
                              transform=transforms.Compose([
-                                 transforms.Grayscale(num_output_channels=1),
+#                                 transforms.Grayscale(num_output_channels=1),
                                  transforms.RandomCrop(32),
                                  transforms.ToTensor()
                              ])),
@@ -245,7 +245,7 @@ def main():
     capsule_layers = [ PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10, 1, 4, 1, 3, coor_add=True, w_shared=True)]
     model = nn.Sequential(*downsampling_layers, *feature_layers, *precapsule_layers, *capsule_layers).to(device)
     """
-    model = capsules(A=32, B=8, C=8, D=8, E=10, iters=args.em_iters).to(device)
+    model = capsules(A=32, B=8, C=8, D=8, E=10, iters=args.em_iters, groups=3).to(device)
     criterion = SpreadLoss(num_class=num_class, m_min=0.2, m_max=0.9)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, weight_decay=args.weight_decay, momentum=0.9)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'max', patience=1)

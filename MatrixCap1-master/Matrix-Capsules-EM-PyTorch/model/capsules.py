@@ -416,7 +416,7 @@ class CapsNet(nn.Module):
 
         #Identity mapping shortcut for residual. Computationally cheaper with 1x1 convolutions
         
-        self.conv1 = nn.Conv2d(1, 32, 3, 1)
+        self.conv1 = nn.Conv2d(3, 32, 3, 1)
         self.res1 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
         self.res2 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
     
