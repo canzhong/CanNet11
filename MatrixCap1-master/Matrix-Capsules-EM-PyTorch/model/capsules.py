@@ -6,14 +6,14 @@ import math
 from torchdiffeq import odeint_adjoint as odeint
 
 
-def conv3x3(in_planes, out_planes, stride=1):
+def conv3x3(in_planes, out_planes, stride=1, groups=3):
     """3x3 convolution with padding"""
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=True)
+    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=True, groups=3)
 
 
 def conv1x1(in_planes, out_planes, stride=1):
     """1x1 convolution"""
-    return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=True)
+    return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=True, groups=3)
 
 
 def norm(dim):
@@ -115,9 +115,9 @@ class PrimaryCaps(nn.Module):
     """
     def __init__(self, A=32, B=32, K=1, P=4, stride=1):
         super(PrimaryCaps, self).__init__()
-        self.pose = nn.Conv2d(in_channels=A, out_channels=B*P*P,
+        self.pose = nn.Conv2d(in_channels=A, out_channels=B*P*P, groups=3,
                             kernel_size=K, stride=stride, bias=True)
-        self.a = nn.Conv2d(in_channels=A, out_channels=B,
+        self.a = nn.Conv2d(in_channels=A, out_channels=B, groups=3,
                             kernel_size=K, stride=stride, bias=True)
         self.sigmoid = nn.Sigmoid()
 
@@ -415,11 +415,11 @@ class CapsNet(nn.Module):
         #A = 2, B = 4, C = 6, D = 10
 
         #Identity mapping shortcut for residual. Computationally cheaper with 1x1 convolutions
-        
-        self.conv1 = nn.Conv2d(3, 32, 3, 1)
+
+        self.conv1 = nn.Conv2d(3, 32, 3, 1, groups=3,)
         self.res1 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
         self.res2 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
-    
+
         self.ode1 = ODEBlock(ODEfunc(32))
    # precapsule_layers = [norm(32), nn.ReLU(inplace=True), nn.Conv2d(32, 32, kernel_size=7, bias=False)]
     #capsule_layers = [ PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10, 1, 4, 1, 3, coor_add=True, w_shared=True)]
@@ -453,4 +453,3 @@ def capsules(**kwargs):
 if __name__ == '__main__':
     model = capsules(E=10)
     print(model)
-
