@@ -115,7 +115,7 @@ class PrimaryCaps(nn.Module):
     """
     def __init__(self, A=32, B=32, K=1, P=4, stride=1):
         super(PrimaryCaps, self).__init__()
-        self.pose = nn.Conv2d(in_channels=A, out_channels=B*P*P)
+        self.pose = nn.Conv2d(in_channels=A, out_channels=B*P*P,
                             kernel_size=K, stride=stride, bias=True)
         self.a = nn.Conv2d(in_channels=A, out_channels=B,
                             kernel_size=K, stride=stride, bias=True)
