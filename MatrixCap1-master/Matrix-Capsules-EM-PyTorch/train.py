@@ -8,13 +8,13 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 
-from model import conv3x3, conv1x1, norm, ResBlock, ODEFunc, ODEBlock, PrimaryCaps, ConvCaps
+from model import conv3x3, conv1x1, norm, ResBlock, ODEfunc, ODEBlock, PrimaryCaps, ConvCaps, CapsNet, capsules
 from loss import SpreadLoss
 from datasets import smallNORB
 
 # Training settings
 parser = argparse.ArgumentParser(description='PyTorch Matrix-Capsules-EM')
-parser.add_argument('--batch-size', type=int, default=128, metavar='N',
+parser.add_argument('--batch-size', type=int, default=32, metavar='N',
                     help='input batch size for training (default: 128)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
@@ -210,6 +210,15 @@ def test(test_loader, model, criterion, device):
     return acc
 
 
+class Flatten(nn.Module):
+
+    def __init__(self):
+        super(Flatten, self).__init__()
+
+    def forward(self, x):
+        shape = torch.prod(torch.tensor(x.shape[1:])).item()
+        return x.view(-1, shape)
+
 def main():
     global args, best_prec1
     args = parser.parse_args()
@@ -225,15 +234,18 @@ def main():
     num_class, train_loader, test_loader = get_setting(args)
 
     # model\
+    """
     downsampling_layers = [
             nn.Conv2d(1, 32, 3, 1),
             ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2)),
             ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2)),
     ]
     feature_layers = [ODEBlock(ODEfunc(32))]
-    capsule_layers = [PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10, 1, 4, 1, 3, coor_add=True, w_shared=True)]
-    model = nn.Sequential(*downsampling_layers, *feature_layers, *capsule_layers).to(device)
-
+    precapsule_layers = [norm(32), nn.ReLU(inplace=True), nn.Conv2d(32, 32, kernel_size=7, bias=False)]
+    capsule_layers = [ PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10, 1, 4, 1, 3, coor_add=True, w_shared=True)]
+    model = nn.Sequential(*downsampling_layers, *feature_layers, *precapsule_layers, *capsule_layers).to(device)
+    """
+    model = capsules(A=32, B=8, C=8, D=8, E=10, iters=args.em_iters).to(device)
     criterion = SpreadLoss(num_class=num_class, m_min=0.2, m_max=0.9)
     optimizer = optim.SGD(model.parameters(), lr=args.lr, weight_decay=args.weight_decay, momentum=0.9)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'max', patience=1)

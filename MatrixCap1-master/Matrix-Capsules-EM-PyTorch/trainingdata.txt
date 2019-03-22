@@ -1,0 +1,2 @@
+Train Epoch: 1	[0/60000 (0%)]	Loss: 0.365135	Accuracy: 15.625000	Time 0.629 (0.629)	Data 0.086 (0.086)
+Train Epoch: 1	[320/60000 (1%)]	Loss: 0.432840	Accuracy: 21.875000	Time 0.421 (0.492)	Data 0.000 (0.008)

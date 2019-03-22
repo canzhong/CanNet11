@@ -8,12 +8,12 @@ from torchdiffeq import odeint_adjoint as odeint
 
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding"""
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False)
+    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=True)
 
 
 def conv1x1(in_planes, out_planes, stride=1):
     """1x1 convolution"""
-    return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
+    return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=True)
 
 
 def norm(dim):
@@ -81,7 +81,7 @@ class ODEBlock(nn.Module):
 
     def forward(self, x):
         self.integration_time = self.integration_time.type_as(x)
-        out = odeint(self.odefunc, x, self.integration_time, rtol=args.tol, atol=args.tol)
+        out = odeint(self.odefunc, x, self.integration_time, rtol=0.00001, atol=0.00001)
         return out[1]
 
     @property
@@ -415,7 +415,15 @@ class CapsNet(nn.Module):
         #A = 2, B = 4, C = 6, D = 10
 
         #Identity mapping shortcut for residual. Computationally cheaper with 1x1 convolutions
-
+        
+        self.conv1 = nn.Conv2d(1, 32, 3, 1)
+        self.res1 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
+        self.res2 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
+    
+        self.ode1 = ODEBlock(ODEfunc(32))
+   # precapsule_layers = [norm(32), nn.ReLU(inplace=True), nn.Conv2d(32, 32, kernel_size=7, bias=False)]
+    #capsule_layers = [ PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10, 1, 4, 1, 3, coor_add=True, w_shared=True)]
+    #model = nn.Sequential(*downsampling_layers, *feature_layers, *precapsule_layers, *capsule_layers).to(device)
 
         self.primary_caps = PrimaryCaps(A, B, 1, P, stride=1)
         self.conv_caps1 = ConvCaps(B, C, K, P, stride=1, iters=iters)
@@ -426,9 +434,23 @@ class CapsNet(nn.Module):
 
 
     def forward(self, x):
+        x = self.conv1(x)
+        x = self.res1(x)
+        x = self.res2(x)
+        x = self.ode1(x)
         x = self.primary_caps(x)
         x = self.conv_caps1(x)
         x = self.conv_caps2(x)
         x = self.class_caps(x)
 
         return x
+
+def capsules(**kwargs):
+    model = CapsNet(**kwargs)
+    return model
+
+
+if __name__ == '__main__':
+    model = capsules(E=10)
+    print(model)
+
