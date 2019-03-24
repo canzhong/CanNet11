@@ -416,11 +416,11 @@ class CapsNet(nn.Module):
 
         #Identity mapping shortcut for residual. Computationally cheaper with 1x1 convolutions
 
-        self.conv1 = nn.Conv2d(3, 32, 3, 1)
-        self.res1 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
-        self.res2 = ResBlock(32, 32, stride=2, downsample=conv1x1(32, 32, 2))
+        self.conv1 = nn.Conv2d(3, 256, 3, 1)
+        self.res1 = ResBlock(256, 256, stride=2, downsample=conv1x1(256, 256, 2))
+        self.res2 = ResBlock(256, 256, stride=2, downsample=conv1x1(256, 256, 2))
 
-        self.ode1 = ODEBlock(ODEfunc(32))
+        self.ode1 = ODEBlock(ODEfunc(256))
    # precapsule_layers = [norm(32), nn.ReLU(inplace=True), nn.Conv2d(32, 32, kernel_size=7, bias=False)]
     #capsule_layers = [ PrimaryCaps(32, 8, 1, 4, 1), ConvCaps(8, 16, 3, 4, 1, 3), ConvCaps(16, 16, 1, 3, 4, 1, 3), ConvCaps(16, 10, 1, 4, 1, 3, coor_add=True, w_shared=True)]
     #model = nn.Sequential(*downsampling_layers, *feature_layers, *precapsule_layers, *capsule_layers).to(device)
