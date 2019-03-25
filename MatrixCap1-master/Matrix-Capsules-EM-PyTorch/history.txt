@@ -1,0 +1,256 @@
+    1  nvidia-smi
+    2  top
+    3  ls
+    4  cd CanNet12/
+    5  ls
+    6  cd Matrix-Capsules-EM-PyTorch/
+    7  ls
+    8  cd data
+    9  ls
+   10  cd cifar10/
+   11  ls
+   12  cd ..
+   13  ls
+   14  ls -la
+   15  cd cifar
+   16  ls
+   17  cd cifar
+   18  cd cifar10
+   19  ls
+   20  cd cifar-10-batches-py/
+   21  ls
+   22  vim readme.html 
+   23  ls
+   24  ls -la
+   25  ls
+   26  cd
+   27  ls
+   28  nvidia-smi
+   29  ls
+   30  cd CanNet12/
+   31  ls
+   32  cd Matrix-Capsules-EM-PyTorch/
+   33  ls
+   34  vim trainingdata.txt 
+   35  ls
+   36  cd train.py 
+   37  vim train.py 
+   38  ls
+   39  nvidia-smi
+   40  top
+   41  nvidia-smi
+   42  ls
+   43  vim traind
+   44  vim trainingdata.txt 
+   45  vim testdata.txt 
+   46  ls
+   47  top
+   48  ls
+   49  ls -la
+   50  top
+   51  ls
+   52  cd CanNet12
+   53  ls
+   54  cd Matrix-Capsules-EM-PyTorch/
+   55  ls
+   56  vim train.py 
+   57  python3 train.py --batch-size 16 --test-batch-size 32 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.0075
+   58  ls
+   59  vim model/capsules.py 
+   60  python3 train.py --batch-size 16 --test-batch-size 32 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.0075
+   61  python3 train.py --batch-size 32 --test-batch-size 32 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.0075
+   62  vim train.py 
+   63  vim model/capsules.py 
+   64  python3 train.py --batch-size 32 --test-batch-size 32 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.0075
+   65  vim model/capsules.py 
+   66  ls
+   67  vim train.py 
+   68  python3 train.py --batch-size 32 --test-batch-size 32 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.0075
+   69  python3 train.py --batch-size 8 --test-batch-size 16 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.0075
+   70  cd ..
+   71  ls
+   72  cd ..
+   73  ls
+   74  rm -r CanNet12
+   75  git clone ssh -p 37473 root@ssh5.vast.ai -L 8080:localhost:80
+   76  git clone https://github.com/canzhong/CanNet12.git
+   77  cd CanNet12
+   78  ls
+   79  cd CanNet12/
+   80  ls
+   81  python3 train.py
+   82  :q!
+   83  ls
+   84  cd ..
+   85  ls
+   86  vim Matrix-Capsules-EM-PyT
+   87  cd Matrix-Capsules-EM-PyTorch/
+   88  ls
+   89  history
+   90  nvidia-smi
+   91  history |grep "1"
+   92  history |grep "8"
+   93  history |grep "4"
+   94  history |grep "7"
+   95  history |grep "6"
+   96  history |grep "5"
+   97  history |grep "3"
+   98  history |grep "2"
+   99  history |grep "1"
+  100  history |grep "4"
+  101  history |grep "6"
+  102  history |grep "7"
+  103  history |grep "8"
+  104  history |grep "9"
+  105  history |grep "10"
+  106  history |grep "13"
+  107  history |grep "12"
+  108  history |grep "11"
+  109  history |grep "14"
+  110  history |grep "15"
+  111  history |grep "16"
+  112  history |grep "17"
+  113  history |grep "18"
+  114  python 3 train.py --batch-size 8 --test-batch-size 16 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.075
+  115  ls
+  116  python3 train.py --batch-size 8 --test-batch-size 16 --dataset cifar10 --epochs 50 --em-iters 3 --lr 0.075
+  117  ls
+  118  exit
+  119  nvidia-smi
+  120  ls
+  121  cd CanNet1
+  122  cd CanNet11
+  123  ls
+  124  cd MatrixCap1-master/
+  125  ls
+  126  cd Matrix-Capsules-EM-PyTorch/
+  127  ls
+  128  vim trainingdata.txt 
+  129  vim testdata.txt 
+  130  ls
+  131  vim testdata.txt 
+  132  ls
+  133  vim testdata.txt 
+  134  ls
+  135  vim testdata.txt 
+  136  ls
+  137  vim trainingdata.txt 
+  138  ls
+  139  ls -la
+  140  rm .trainingdata.txt.swp 
+  141  ls
+  142  vim trainingdata.txt 
+  143  echo
+  144  echo trainingdata.txt 
+  145  cat trainingdata.txt 
+  146  cat trainingdata.txt | grep "Accuracy: 100.000000"
+  147  :q!
+  148  ls
+  149  vim trainingdata.txt 
+  150  ls
+  151  touch tr.txt
+  152  ls
+  153  cat trainingdata.txt | grep "Accuracy: 100.00000" | >> tr.txt
+  154  vim tr.txt 
+  155  cat trainingdata.txt | grep "Accuracy: 100.00000"  >> tr.txt
+  156  vim tr.txt 
+  157  vim testdata.txt 
+  158  ls
+  159  vim train.py
+  160  top
+  161  nvidia-smi
+  162  vim testdata.txt 
+  163  vim train.py
+  164  pwd
+  165  ls
+  166  rm tr.txt
+  167  touch tr.txt
+  168  cat trainingdata.txt | grep "Accuracy: 100.00000"  >> tr.txt
+  169  ls
+  170  git add .
+  171  git commit -m 'm'
+  172  git push
+  173  git add .
+  174  git commit -m 'm'
+  175  git push
+  176  ls
+  177  vim train.py
+  178  ls
+  179  cd 
+  180  ls
+  181  cd CanNet11
+  182  ls
+  183  cd MatrixCap1-master/
+  184  ls
+  185  cd Matrix-Capsules-EM-PyTorch/
+  186  ls
+  187  vim testdata.txt 
+  188  ls
+  189  cd ..
+  190  ls
+  191  cd ..
+  192  cd CanNet10
+  193  ls
+  194  cd CanNet12
+  195  ls
+  196  cd CanNet12/
+  197  ls
+  198  cd ..
+  199  ls
+  200  cd Matrix-Capsules-EM-PyTorch/
+  201  ls
+  202  vim testdata.txt 
+  203  ls
+  204  cd ..
+  205  ls
+  206  cd ..
+  207  ls
+  208  cd CanNet11
+  209  ls
+  210  cd MatrixCap1-master/
+  211  ls
+  212  cd Matrix-Capsules-EM-PyTorch/
+  213  ls
+  214  vim testdata.txt 
+  215  ls
+  216  vim testdata.txt 
+  217  ls
+  218  vim trainingdata.txt 
+  219  rm tr.txt
+  220  ls
+  221  touch tr.txt
+  222  cat trainingdata.txt | grep "Train Epoch: 80" >> tr.txt
+  223  vim tr.txt
+  224  ls
+  225  git add .
+  226  git commit -m 
+  227  git commit -m 'm'
+  228  git add .
+  229  git push
+  230  vim trainingdata.txt 
+  231  ls -la
+  232  cd ..
+  233  ls -la
+  234  cd CanNet11
+  235  ls
+  236  cd MatrixCap1-master/
+  237  ls
+  238  cd Matrix-Capsules-EM-PyTorch/
+  239  ls
+  240  ls -la
+  241  ls -lah
+  242  vim testdata.txt 
+  243  vim train.py 
+  244  ls
+  245  vim model/capsules.py 
+  246  vim testdata.txt 
+  247  1
+  248  vim testdata.txt 
+  249  cat trainingdata.txt | grep "Train Epoch: 86" >> tr.txt
+  250  git add .
+  251  git commit -m 'm'
+  252  git push
+  253  vim train.py 
+  254  history
+  255  touch history.txt
+  256  history >> history.txt
