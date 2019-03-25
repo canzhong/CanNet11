@@ -88,3 +88,9 @@ Test Set: Average Loss: 3.089489, Accuracy: 74.625297
 Test Set: Average Loss: 3.068583, Accuracy: 74.725217 
 Test Set: Average Loss: 3.180028, Accuracy: 72.576936 
 Test Set: Average Loss: 3.099308, Accuracy: 74.560349 
+Test Set: Average Loss: 3.024071, Accuracy: 74.840125 
+Test Set: Average Loss: 3.129448, Accuracy: 74.475417 
+Test Set: Average Loss: 2.991329, Accuracy: 75.419662 
+Test Set: Average Loss: 3.054916, Accuracy: 73.106512 
+Test Set: Average Loss: 3.098151, Accuracy: 72.966624 
+Test Set: Average Loss: 3.063401, Accuracy: 76.628695 
