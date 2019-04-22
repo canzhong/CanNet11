@@ -1,5 +1,9 @@
 
 # Matrix Capsules with EM Routing using ResBlock downsampling and ODEBlock feature sampling
+
+The Research Poster which was developed to show the results of my research is attached as pdf1.pdf as per the commitment established when I received the SURF grant. Research Poster was presented at a symposium. Explained complex concepts to three judges (diverse background {art, spanish, health information}) were done to receive feedback and constructive criticism. 
+
+
 A Pytorch implementation variation of [Matrix Capsules with EM Routing](https://openreview.net/pdf?id=HJWLfGWRb) using 2 ResBlocks to downsample data followed by 1 ODEBlock for feature map extraction.
 
 Architecture :
